@@ -11,6 +11,19 @@ const roles = [
   { label: "Principle Engineer", value: "Principle Engineer" }
 ];
 
+const MultipleForm=({name, isMulti, options, onChange})=>{
+  const handleChange=(e)=>{
+    onChange(name, e)
+  }
+
+  return (<Select
+    name={name}
+    onChange={handleChange}
+    options={options}
+    isMulti={isMulti}
+  />)
+}
+
 function App({ values, setFieldValue, resetForm }) {
   let [managers, setManagers] = useState([]);
   let [employees, setEmployees] = useState([]);
@@ -65,23 +78,23 @@ function App({ values, setFieldValue, resetForm }) {
         </div>
         <div style={{ width: "500px", margin: "auto" }}>
           <label>Roles</label>
-          <Select
-            onChange={(event)=>setFieldValue("roles", event )}
-            options={roles}
-            isMulti={true}
+          <MultipleForm 
             name="roles"
+            isMulti={true} 
+            onChange={setFieldValue} 
+            options={roles}
           />
         </div>
         <div style={{ width: "500px", margin: "auto" }}>
           <label>Manager</label>
-          <Select
-            name="manager"
-            onChange={(e)=>setFieldValue("manager", e )}
-            options={employees.map(({ id, first_name, last_name }) => ({
+          <MultipleForm 
+            name="manager" 
+            isMulti={false} 
+            onChange={setFieldValue} 
+            options={employees.map(({id, first_name, last_name})=> ({
               value: id,
               label: first_name + " " + last_name
             }))}
-            isMulti={false}
           />
         </div>
         <button type="submit">submit</button>
